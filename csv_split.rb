@@ -1,6 +1,8 @@
 require 'optparse'
 require 'rubygems'
 require 'fastercsv'
+require 'excelsior'
+
 
 options = {
   :file => ARGV[0],
@@ -20,7 +22,8 @@ class CSVFile
 
   private
   def parse
-    FasterCSV.open(@options[:file]) {|file| @lines = file.read }
+    @lines = []
+    Excelsior::Reader.rows(File.open(@options[:file], "rb")) {|row|  lines << row }
     @lines.reverse!
     @lines
   end
